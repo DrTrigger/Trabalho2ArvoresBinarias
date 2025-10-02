@@ -35,9 +35,9 @@
 
 | Tarefa / Entregável                         | Descrição curta                                         | Breno Ricardo | Brayan Mazega | Luiz Felipe Elizeta | Início  | Fim     | Status |
 |--------------------------------------------|----------------------------------------------------------|---------------|---------------|---------------------|---------|---------|--------|
-| Estrutura `No<T>`                           | Nó com filhos e valor                                   |               |               |                     |         |         |        |
-| `ArvoreBinaria<T>`                          | Classe base com Comparator no construtor                |               |               |                     |         |         |        |
-| `adicionar(T)`                              | Inserção ordenada                                       |               |               |                     |         |         |        |
+| Estrutura `No<T>`                           | Nó com filhos e valor                                   |        x       |        x       |         x            |     -    |     -    |   feito     |
+| `ArvoreBinaria<T>`                          | Classe base com Comparator no construtor                |               |               |                     |      -   |     -    |     feito   |
+| `adicionar(T)`                              | Inserção ordenada                                       |        x       |               |                     |      02/10     |    02/10       |     feito   |
 | `pesquisar(T)`                              | Busca pelo índice                                       |               |               |                     |         |         |        |
 | `pesquisar(T, Comparator)`                  | Busca com Comparator alternativo (varredura)            |               |               |                     |         |         |        |
 | `remover(T)`                                | Remoção (0/1/2 filhos, sucessor)                        |               |               |                     |         |         |        |
@@ -51,6 +51,7 @@
 | Relatório – Q7–Q9                           | Busca com Comparator alternativo + desempenho           |               |               |                     |         |         |        |
 | Relatório – Q10–Q12                         | App: requisitos, arquitetura, planilha de atuação       |               |               |                     |         |         |        |
 | Revisão final + PDF                         | Revisão, nomes do grupo, link do repositório            |               |               |                     |         |         |        |
+
 
 
 
