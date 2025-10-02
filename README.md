@@ -37,5 +37,22 @@
   * [ ] Dividir tarefas de forma equilibrada
 
 
+  # Organização do Grupo e Divisão de Tarefas
+
+| Tarefa                                    | Descrição resumida                                 | Breno Ricardo | Brayan Mazega | Luiz Felipe Elizeta | Status   | Prazo   |
+|-------------------------------------------|---------------------------------------------------|---------------|---------------|----------------------|----------|---------|
+| Implementar bibliotecas de árvores binárias| Criar classes, métodos e operações básicas         |               |               |                      |          |         |
+| Implementar biblioteca AVL                 | Adicionar balanceamento AVL e validar inserções    |               |               |                      |          |         |
+| Aplicar bibliotecas no sistema             | Integrar ao sistema e testar com dados             |               |               |                      |          |         |
+| Analisar topologia e complexidade          | Comparar desempenho entre árvores balanceadas/não  |               |               |                      |          |         |
+| Pesquisar estruturas Java                  | Levantar estruturas nativas de árvores em Java     |               |               |                      |          |         |
+| Elaborar planilha de responsabilidades     | Manter atualizado o registro do grupo              |               |               |                      |          |         |
+| Redigir relatório final                    | Organizar análises, resultados e conclusões        |               |               |                      |          |         |
+| Organização inicial                        | Ler especificação e definir plano de ação          |               |               |                      |          |         |
+| Divisão de tarefas                         | Distribuir etapas entre os integrantes             |               |               |                      |          |         |
+
+
+
+
 
 
