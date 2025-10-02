@@ -1,40 +1,34 @@
-✅ **Checklist do Trabalho – Árvores Binárias e AVL**
+# Checklist – Etapas 1, 2 e 3 (TPA Árvores)
 
-* 📚 **Implementar bibliotecas de árvores binárias e AVL**
+## Etapa 1 – Biblioteca de Árvore Binária
+- [ ] Criar estrutura `No<T>` (valor, filhoEsquerda, filhoDireita).
+- [ ] Implementar `ArvoreBinaria<T>` seguindo `IArvoreBinaria<T>`.
+- [ ] Injeção de `Comparator<T>` no construtor para indexação.
+- [ ] `adicionar(T)`: inserir respeitando a ordem do Comparator.
+- [ ] `pesquisar(T)`: busca usando o Comparator da árvore.
+- [ ] `pesquisar(T, Comparator)`: varredura completa quando o comparator não é o índice.
+- [ ] `remover(T)`: 0, 1 ou 2 filhos (usar sucessor em-ordem).
+- [ ] `altura()`: raiz nula = -1; raiz única = 0.
+- [ ] `quantidadeNos()`: contagem total.
+- [ ] `caminharEmNivel()`: nível a nível, formato `"[a \n b \n c]"`.
+- [ ] `caminharEmOrdem()`: esquerda–raiz–direita, formato `"[a \n b \n c]"`.
+- [ ] Testes mínimos: inserir N itens, checar ordem/altura/quantidade.
 
-  * [ ] Estruturar classes e métodos
-  * [ ] Garantir operações básicas (inserção, remoção, busca)
-  * [ ] Implementar balanceamento da AVL
+## Etapa 2 – Aplicativo (uso da biblioteca)
+- [ ] Definir domínio: `Aluno(nome, matricula)`.
+- [ ] Criar `ComparadorAlunoPorMatricula` (índice) e `ComparadorAlunoPorNome` (busca alternativa).
+- [ ] Fluxos: adicionar, listar em ordem, buscar por matrícula (índice), buscar por nome (Comparator alternativo), remover.
+- [ ] Saídas: imprimir resultados e caminhamentos.
+- [ ] Testes com dados variados (ordenados, aleatórios).
 
-* 🖥️ **Aplicar bibliotecas implementadas em um sistema**
+## Etapa 3 – Relatório (árvore binária)
+- [ ] Baixar projeto do professor e ajustar imports para usar sua biblioteca.
+- [ ] Rodar `AppRelatorioArvoreBinaria` (sem alterar lógica do app).
+- [ ] Responder Perguntas 1–9 (topologia degenerada vs. balanceada, nós percorridos, O-() de buscas).
+- [ ] Descrever o seu aplicativo (Perguntas 10–12): requisitos, arquitetura, planilha de atuação.
+- [ ] Incluir nomes do grupo e link do repositório.
+- [ ] Exportar em PDF.
 
-  * [ ] Integrar as bibliotecas ao sistema
-  * [ ] Testar com diferentes cenários de dados
-  * [ ] Validar funcionamento correto
-
-* 📊 **Analisar topologia da árvore e complexidade dos algoritmos**
-
-  * [ ] Comparar desempenho em árvores balanceadas vs. não balanceadas
-  * [ ] Documentar resultados obtidos
-  * [ ] Destacar impacto na ordem de complexidade
-
-* 🔍 **Pesquisar estruturas de árvores binárias na biblioteca padrão do Java**
-
-  * [ ] Levantar quais estruturas já estão disponíveis
-  * [ ] Comparar com a implementação própria
-  * [ ] Registrar vantagens e limitações
-
-* 📝 **Relatório – Etapa 3**
-
-  * [ ] Elaborar planilha de responsabilidades do grupo
-  * [ ] Atualizar a planilha continuamente
-  * [ ] Redigir relatório final com análises e resultados
-
-* 👥 **Organização do grupo e divisão de tarefas**
-
-  * [ ] Ler toda a especificação do trabalho
-  * [ ] Planejar cronograma inicial
-  * [ ] Dividir tarefas de forma equilibrada
 
 
   # Organização do Grupo e Divisão de Tarefas
@@ -50,6 +44,7 @@
 | Redigir relatório final                    | Organizar análises, resultados e conclusões        |               |               |                      |          |         |
 | Organização inicial                        | Ler especificação e definir plano de ação          |               |               |                      |          |         |
 | Divisão de tarefas                         | Distribuir etapas entre os integrantes             |               |               |                      |          |         |
+
 
 
 
