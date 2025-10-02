@@ -1,10 +1,10 @@
 # Checklist – Etapas 1, 2 e 3 (TPA Árvores)
 
 ## Etapa 1 – Biblioteca de Árvore Binária
-- [ ] Criar estrutura `No<T>` (valor, filhoEsquerda, filhoDireita).
-- [ ] Implementar `ArvoreBinaria<T>` seguindo `IArvoreBinaria<T>`.
-- [ ] Injeção de `Comparator<T>` no construtor para indexação.
-- [ ] `adicionar(T)`: inserir respeitando a ordem do Comparator.
+- [x] Criar estrutura `No<T>` (valor, filhoEsquerda, filhoDireita).
+- [x] Implementar `ArvoreBinaria<T>` seguindo `IArvoreBinaria<T>`.
+- [x] Injeção de `Comparator<T>` no construtor para indexação.
+- [x] `adicionar(T)`: inserir respeitando a ordem do Comparator.
 - [ ] `pesquisar(T)`: busca usando o Comparator da árvore.
 - [ ] `pesquisar(T, Comparator)`: varredura completa quando o comparator não é o índice.
 - [ ] `remover(T)`: 0, 1 ou 2 filhos (usar sucessor em-ordem).
@@ -15,8 +15,8 @@
 - [ ] Testes mínimos: inserir N itens, checar ordem/altura/quantidade.
 
 ## Etapa 2 – Aplicativo (uso da biblioteca)
-- [ ] Definir domínio: `Aluno(nome, matricula)`.
-- [ ] Criar `ComparadorAlunoPorMatricula` (índice) e `ComparadorAlunoPorNome` (busca alternativa).
+- [x] Definir domínio: `Aluno(nome, matricula)`.
+- [x] Criar `ComparadorAlunoPorMatricula` (índice) e `ComparadorAlunoPorNome` (busca alternativa).
 - [ ] Fluxos: adicionar, listar em ordem, buscar por matrícula (índice), buscar por nome (Comparator alternativo), remover.
 - [ ] Saídas: imprimir resultados e caminhamentos.
 - [ ] Testes com dados variados (ordenados, aleatórios).
@@ -51,6 +51,7 @@
 | Relatório – Q7–Q9                           | Busca com Comparator alternativo + desempenho           |               |               |                     |         |         |        |
 | Relatório – Q10–Q12                         | App: requisitos, arquitetura, planilha de atuação       |               |               |                     |         |         |        |
 | Revisão final + PDF                         | Revisão, nomes do grupo, link do repositório            |               |               |                     |         |         |        |
+
 
 
 
