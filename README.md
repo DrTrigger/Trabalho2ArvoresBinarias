@@ -31,19 +31,28 @@
 
 
 
-  # Organização do Grupo e Divisão de Tarefas
+# Planilha de Atuação dos Integrantes (Etapas 1–3)
 
-| Tarefa                                    | Descrição resumida                                 | Breno Ricardo | Brayan Mazega | Luiz Felipe Elizeta | Status   | Prazo   |
-|-------------------------------------------|---------------------------------------------------|---------------|---------------|----------------------|----------|---------|
-| Implementar bibliotecas de árvores binárias| Criar classes, métodos e operações básicas         |               |               |                      |          |         |
-| Implementar biblioteca AVL                 | Adicionar balanceamento AVL e validar inserções    |               |               |                      |          |         |
-| Aplicar bibliotecas no sistema             | Integrar ao sistema e testar com dados             |               |               |                      |          |         |
-| Analisar topologia e complexidade          | Comparar desempenho entre árvores balanceadas/não  |               |               |                      |          |         |
-| Pesquisar estruturas Java                  | Levantar estruturas nativas de árvores em Java     |               |               |                      |          |         |
-| Elaborar planilha de responsabilidades     | Manter atualizado o registro do grupo              |               |               |                      |          |         |
-| Redigir relatório final                    | Organizar análises, resultados e conclusões        |               |               |                      |          |         |
-| Organização inicial                        | Ler especificação e definir plano de ação          |               |               |                      |          |         |
-| Divisão de tarefas                         | Distribuir etapas entre os integrantes             |               |               |                      |          |         |
+| Tarefa / Entregável                         | Descrição curta                                         | Breno Ricardo | Brayan Mazega | Luiz Felipe Elizeta | Início  | Fim     | Status |
+|--------------------------------------------|----------------------------------------------------------|---------------|---------------|---------------------|---------|---------|--------|
+| Estrutura `No<T>`                           | Nó com filhos e valor                                   |               |               |                     |         |         |        |
+| `ArvoreBinaria<T>`                          | Classe base com Comparator no construtor                |               |               |                     |         |         |        |
+| `adicionar(T)`                              | Inserção ordenada                                       |               |               |                     |         |         |        |
+| `pesquisar(T)`                              | Busca pelo índice                                       |               |               |                     |         |         |        |
+| `pesquisar(T, Comparator)`                  | Busca com Comparator alternativo (varredura)            |               |               |                     |         |         |        |
+| `remover(T)`                                | Remoção (0/1/2 filhos, sucessor)                        |               |               |                     |         |         |        |
+| `altura()` / `quantidadeNos()`              | Métricas                                                |               |               |                     |         |         |        |
+| `caminharEmNivel()` / `caminharEmOrdem()`   | Saídas formatadas                                       |               |               |                     |         |         |        |
+| App – fluxos principais                     | Add, listar, buscar por matrícula/nome, remover         |               |               |                     |         |         |        |
+| App – testes                                | Dados crescentes/aleatórios                             |               |               |                     |         |         |        |
+| Integração com app do professor             | Ajuste de imports + execução                            |               |               |                     |         |         |        |
+| Relatório – Q1–Q3                           | Degenerada: topologia, pior caso, O-()                  |               |               |                     |         |         |        |
+| Relatório – Q4–Q6                           | Balanceada: topologia, pior caso, O-()                  |               |               |                     |         |         |        |
+| Relatório – Q7–Q9                           | Busca com Comparator alternativo + desempenho           |               |               |                     |         |         |        |
+| Relatório – Q10–Q12                         | App: requisitos, arquitetura, planilha de atuação       |               |               |                     |         |         |        |
+| Revisão final + PDF                         | Revisão, nomes do grupo, link do repositório            |               |               |                     |         |         |        |
+
+
 
 
 
