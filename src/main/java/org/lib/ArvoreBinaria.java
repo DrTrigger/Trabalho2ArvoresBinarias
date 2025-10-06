@@ -59,7 +59,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             // Compara a chave buscada com o valor do nó atual usando o comparador da ÁRVORE (o índice).
             int cmp = comparador.compare(valor, atual.getValor());
             if (cmp == 0) return atual.getValor(); // Achou o elemento; retorna o valor armazenado.
-            // Se chave < atual, vai para a esquerda; senão, vai para a direita
+            // Se chave < atual, vai para a esquerda; senão, vai para a direita (regra da BST).
             atual = (cmp < 0) ? atual.getFilhoEsquerda() : atual.getFilhoDireita();
         }
         // Se saiu do loop, não encontrou o valor; retorna null.
@@ -95,71 +95,9 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T remover(T valor) {
-        // Valida que o valor a remover não é nulo.
-        Objects.requireNonNull(valor, "Valor de remoção não pode ser nulo.");
-        // Vamos procurar o nó a ser removido E manter referência ao seu pai.
-        No<T> pai = null;   // Começa sem pai (a raiz não tem pai).
-        No<T> atual = raiz; // Começa a busca pela raiz.
-
-        // Busca do nó que contém o valor (usando a ordenação da árvore).
-        while (atual != null) {
-            int cmp = comparador.compare(valor, atual.getValor()); // Compara chave buscada com o nó atual.
-            if (cmp == 0) break; // Encontrou o nó a ser removido.
-            pai = atual; // Atualiza o pai antes de descer.
-            // Desce para esquerda ou direita conforme a comparação.
-            atual = (cmp < 0) ? atual.getFilhoEsquerda() : atual.getFilhoDireita();
-        }
-        if (atual == null) return null; // Não achou o valor na árvore; nada para remover.
-
-        T removido = atual.getValor(); // Guarda o valor removido para retornar ao final.
-
-        // --- Trata os 3 casos clássicos de remoção em BST ---
-
-        // Caso 1: Nó folha (sem filhos).
-        if (atual.getFilhoEsquerda() == null && atual.getFilhoDireita() == null) {
-            substituirFilho(pai, atual, null); // Apenas desconecta o nó do pai.
-
-            // Caso 2: Nó com um único filho (direita).
-        } else if (atual.getFilhoEsquerda() == null) {
-            substituirFilho(pai, atual, atual.getFilhoDireita()); // Liga o pai diretamente ao filho direito.
-
-            // Caso 2 (variante): Nó com um único filho (esquerda).
-        } else if (atual.getFilhoDireita() == null) {
-            substituirFilho(pai, atual, atual.getFilhoEsquerda()); // Liga o pai diretamente ao filho esquerdo.
-
-            // Caso 3: Nó com dois filhos.
-        } else {
-            // Estratégia: substituir o valor do nó atual pelo do seu SUCESSOR (menor valor da subárvore direita).
-            No<T> paiSucessor = atual;             // Começa assumindo que o pai do sucessor é o próprio atual.
-            No<T> sucessor = atual.getFilhoDireita(); // Vai para a subárvore direita.
-            // Desce sempre pela esquerda até encontrar o menor elemento (o sucessor in-order).
-            while (sucessor.getFilhoEsquerda() != null) {
-                paiSucessor = sucessor;                     // Atualiza o pai do sucessor.
-                sucessor = sucessor.getFilhoEsquerda();     // Avança para o próximo mais à esquerda.
-            }
-            // Copia o valor do sucessor para o nó atual (mantém a estrutura, muda só o valor).
-            atual.setValor(sucessor.getValor());
-            // Agora remove fisicamente o sucessor (que terá no máximo 1 filho à direita).
-            if (paiSucessor == atual) { // Sucessor era o filho direito imediato do nó atual.
-                paiSucessor.setFilhoDireita(sucessor.getFilhoDireita()); // Liga o filho direito do sucessor no lugar dele.
-            } else { // Sucessor era mais abaixo na cadeia esquerda.
-                paiSucessor.setFilhoEsquerda(sucessor.getFilhoDireita()); // Ajusta o ponteiro esquerdo do pai do sucessor.
-            }
-        }
-        // Retorna o valor que foi removido (ou substituído).
-        return removido;
+        return null;
     }
 
-    // Método auxiliar que ajusta o ponteiro do 'pai' para substituir o filho 'alvo' por 'novoFilho'.
-    private void substituirFilho(No<T> pai, No<T> alvo, No<T> novoFilho) {
-        if (pai == null) {          // Se o pai é nulo, o alvo era a raiz.
-            raiz = novoFilho;       // Atualiza a raiz da árvore.
-        } else if (pai.getFilhoEsquerda() == alvo) { // Se o alvo era o filho esquerdo do pai...
-            pai.setFilhoEsquerda(novoFilho);         // Substitui o filho esquerdo.
-        } else {                     // Caso contrário, era o filho direito.
-            pai.setFilhoDireita(novoFilho);          // Substitui o filho direito.
-        }
-    }
 
     @Override
     public int altura() {
@@ -181,33 +119,18 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         return contar(raiz);
     }
 
+    @Override
+    public String caminharEmNivel() {
+        return "";
+    }
+
     // Conta nós recursivamente: nulo conta 0; caso contrário 1 + esquerda + direita.
     private int contar(No<T> n) {
         if (n == null) return 0; // Base: subárvore vazia tem zero nós.
         return 1 + contar(n.getFilhoEsquerda()) + contar(n.getFilhoDireita()); // Soma 1 (nó atual) com as contagens dos filhos.
     }
 
-    @Override
-    public String caminharEmNivel() {
-        // Constrói uma string com os valores em ordem de nível, separados por " \n ", iniciando com "[" e terminando com "]".
-        StringBuilder sb = new StringBuilder("["); // Começa com "[" conforme a especificação.
-        if (raiz != null) { // Se a árvore não está vazia, faz uma BFS (percurso em largura).
-            Deque<No<T>> fila = new ArrayDeque<>(); // Fila para visitar nós nível a nível.
-            fila.add(raiz); // Começa pela raiz.
-            boolean first = true; // Controle para não colocar separador antes do primeiro elemento.
-            while (!fila.isEmpty()) { // Enquanto houver nós a visitar...
-                No<T> n = fila.removeFirst(); // Retira o primeiro da fila (o mais antigo enfileirado).
-                if (!first) sb.append(" \n "); // Se não é o primeiro, adiciona o separador exigido.
-                first = false; // Depois do primeiro, todos os próximos colocarão separador.
-                sb.append(String.valueOf(n.getValor())); // Concatena o valor do nó atual usando toString().
-                // Enfileira os filhos para manter a ordem de nível.
-                if (n.getFilhoEsquerda() != null) fila.addLast(n.getFilhoEsquerda());
-                if (n.getFilhoDireita() != null) fila.addLast(n.getFilhoDireita());
-            }
-        }
-        sb.append("]"); // Fecha com "]" conforme a especificação.
-        return sb.toString(); // Retorna a string final do caminhamento em nível.
-    }
+
 
     @Override
     public String caminharEmOrdem() {
