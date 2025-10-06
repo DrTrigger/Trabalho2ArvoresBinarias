@@ -1,23 +1,10 @@
-package org.lib;
+package org.lib; // Define o pacote onde esta classe está localizada (organiza o código por módulos).
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import java.util.*; // Importa todas as classes do pacote java.util (Deque, ArrayDeque, Comparator, etc.).
+import java.util.Objects; // Importa explicitamente a classe Objects (redundante com o wildcard, mas ok).
 
-import org.lib.exception.ArvoreVaziaException;
-import org.lib.exception.ValorNaoEncontradoException;
-
-import java.util.Comparator;
-import java.util.Objects;
-
-/**
- *
- * @author victoriocarvalho
- */
+// Declara uma classe genérica ArvoreBinaria que implementa a interface IArvoreBinaria<T>.
 public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
-
 
     protected No<T> raiz = null;      // Referência para o nó raiz da árvore; começa vazia (null).
     protected Comparator<T> comparador; // Comparator usado para definir a ordem dos elementos na árvore.
@@ -27,7 +14,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         // Garante que o comparador não é nulo; lança NullPointerException com mensagem se for.
         this.comparador = Objects.requireNonNull(comp, "Comparator não pode ser nulo.");
     }
-
 
     @Override
     public void adicionar(T novoValor) {
@@ -49,14 +35,14 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                     atual.setFilhoEsquerda(new No<>(novoValor)); // Insere aqui como novo filho esquerdo.
                     return; // Inserção concluída.
                 }
-                // Caso exista, desce para a esquerda e continua a procura.
+                // Caso exista, desce para a esquerda e continua a procurar.
                 atual = atual.getFilhoEsquerda();
             } else { // Se cmp >= 0, segue para a direita (duplicatas vão para a direita por convenção aqui).
                 if (atual.getFilhoDireita() == null) { // Se não existe filho direito...
                     atual.setFilhoDireita(new No<>(novoValor)); // Insere aqui como novo filho direito.
                     return; // Inserção concluída.
                 }
-                // Caso exista, desce para a direita e continua a procura.
+                // Caso exista, desce para a direita e continua a procurar.
                 atual = atual.getFilhoDireita();
             }
         }
@@ -64,121 +50,181 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T pesquisar(T valor) {
-        Objects.requireNonNull(valor, "Valor a pesquisar não pode ser nulo.");
-        if (raiz == null) throw new ArvoreVaziaException("A árvore está vazia, não é possível pesquisar valores");
-
+        // Valida que o valor de busca não é nulo.
+        Objects.requireNonNull(valor, "Valor de busca não pode ser nulo.");
+        // Começa a busca a partir da raiz.
         No<T> atual = raiz;
-
-        while (atual != null){
+        // Enquanto não chegar ao fim (null), tenta encontrar o valor.
+        while (atual != null) {
+            // Compara a chave buscada com o valor do nó atual usando o comparador da ÁRVORE (o índice).
             int cmp = comparador.compare(valor, atual.getValor());
-
-            // Se = 0 Então encontrou
-            if (cmp == 0) {
-                return atual.getValor();
-            }
-            // Se < 0 então vai para esquerda
-            else if (cmp < 0) {
-                atual = atual.getFilhoEsquerda();
-            }
-            // Se > 0 então vai para direita
-            else {
-                atual = atual.getFilhoDireita();
-            }
+            if (cmp == 0) return atual.getValor(); // Achou o elemento; retorna o valor armazenado.
+            // Se chave < atual, vai para a esquerda; senão, vai para a direita
+            atual = (cmp < 0) ? atual.getFilhoEsquerda() : atual.getFilhoDireita();
         }
-
-        // Utilizei uma exception, mas, pode mudar futuramente
-        throw new ValorNaoEncontradoException("Valor não encontrado");
+        // Se saiu do loop, não encontrou o valor; retorna null.
+        return null;
     }
 
     @Override
-    public T pesquisar(T valor, Comparator comparador) {
-        Objects.requireNonNull(valor, "Valor a pesquisar não pode ser nulo.");
-        if (raiz == null) throw new ArvoreVaziaException("A árvore está vazia, não é possível pesquisar valores");
+    @SuppressWarnings({"rawtypes","unchecked"}) // Suprime avisos por usar Comparator "raw" recebido externamente.
+    public T pesquisar(T valor, Comparator outroComparador) {
+        // Valida que o comparator alternativo foi fornecido.
+        Objects.requireNonNull(outroComparador, "Comparator da busca não pode ser nulo.");
+        // Valida que o valor de busca não é nulo.
+        Objects.requireNonNull(valor, "Valor de busca não pode ser nulo.");
+        // Se a árvore está vazia, não há o que procurar.
+        if (raiz == null) return null;
 
-        No<T> atual = raiz;
-
-        while (atual != null){
-            int cmp = comparador.compare(valor, atual.getValor());
-            // Se = 0 Então encontrou
-            if (cmp == 0) return atual.getValor();
-                // Se < 0 então vai para esquerda
-            else if (cmp < 0) atual = atual.getFilhoEsquerda();
-                // Se > 0 então vai para direita
-            else atual = atual.getFilhoDireita();
+        // Faremos uma varredura completa (BFS) porque a árvore foi indexada por OUTRO comparador.
+        Deque<No<T>> fila = new ArrayDeque<>(); // Fila para percorrer em nível (largura).
+        fila.add(raiz); // Começa pela raiz.
+        while (!fila.isEmpty()) { // Enquanto houver nós a visitar...
+            No<T> n = fila.removeFirst(); // Retira o primeiro da fila (próximo nível da árvore).
+            // Compara usando o comparador ALTERNATIVO fornecido apenas para esta busca.
+            if (outroComparador.compare(valor, n.getValor()) == 0) {
+                return n.getValor(); // Achou um elemento que "equivale" segundo o comparador alternativo.
+            }
+            // Enfileira filhos (se existirem) para continuar o percurso em nível.
+            if (n.getFilhoEsquerda() != null) fila.addLast(n.getFilhoEsquerda());
+            if (n.getFilhoDireita() != null) fila.addLast(n.getFilhoDireita());
         }
-
-        // Utilizei uma exception, mas, pode mudar futuramente
-        throw new ValorNaoEncontradoException("Valor não encontrado");
+        // Se terminou a BFS e nada bateu, retorna null (não encontrado).
+        return null;
     }
 
     @Override
     public T remover(T valor) {
+        // Valida que o valor a remover não é nulo.
+        Objects.requireNonNull(valor, "Valor de remoção não pode ser nulo.");
+        // Vamos procurar o nó a ser removido E manter referência ao seu pai.
+        No<T> pai = null;   // Começa sem pai (a raiz não tem pai).
+        No<T> atual = raiz; // Começa a busca pela raiz.
 
-        // TODO Esse método é muito mais complexo do que parece.
-        //  vou precisar de ajuda para este
-        return valor;
+        // Busca do nó que contém o valor (usando a ordenação da árvore).
+        while (atual != null) {
+            int cmp = comparador.compare(valor, atual.getValor()); // Compara chave buscada com o nó atual.
+            if (cmp == 0) break; // Encontrou o nó a ser removido.
+            pai = atual; // Atualiza o pai antes de descer.
+            // Desce para esquerda ou direita conforme a comparação.
+            atual = (cmp < 0) ? atual.getFilhoEsquerda() : atual.getFilhoDireita();
+        }
+        if (atual == null) return null; // Não achou o valor na árvore; nada para remover.
+
+        T removido = atual.getValor(); // Guarda o valor removido para retornar ao final.
+
+        // --- Trata os 3 casos clássicos de remoção em BST ---
+
+        // Caso 1: Nó folha (sem filhos).
+        if (atual.getFilhoEsquerda() == null && atual.getFilhoDireita() == null) {
+            substituirFilho(pai, atual, null); // Apenas desconecta o nó do pai.
+
+            // Caso 2: Nó com um único filho (direita).
+        } else if (atual.getFilhoEsquerda() == null) {
+            substituirFilho(pai, atual, atual.getFilhoDireita()); // Liga o pai diretamente ao filho direito.
+
+            // Caso 2 (variante): Nó com um único filho (esquerda).
+        } else if (atual.getFilhoDireita() == null) {
+            substituirFilho(pai, atual, atual.getFilhoEsquerda()); // Liga o pai diretamente ao filho esquerdo.
+
+            // Caso 3: Nó com dois filhos.
+        } else {
+            // Estratégia: substituir o valor do nó atual pelo do seu SUCESSOR (menor valor da subárvore direita).
+            No<T> paiSucessor = atual;             // Começa assumindo que o pai do sucessor é o próprio atual.
+            No<T> sucessor = atual.getFilhoDireita(); // Vai para a subárvore direita.
+            // Desce sempre pela esquerda até encontrar o menor elemento (o sucessor in-order).
+            while (sucessor.getFilhoEsquerda() != null) {
+                paiSucessor = sucessor;                     // Atualiza o pai do sucessor.
+                sucessor = sucessor.getFilhoEsquerda();     // Avança para o próximo mais à esquerda.
+            }
+            // Copia o valor do sucessor para o nó atual (mantém a estrutura, muda só o valor).
+            atual.setValor(sucessor.getValor());
+            // Agora remove fisicamente o sucessor (que terá no máximo 1 filho à direita).
+            if (paiSucessor == atual) { // Sucessor era o filho direito imediato do nó atual.
+                paiSucessor.setFilhoDireita(sucessor.getFilhoDireita()); // Liga o filho direito do sucessor no lugar dele.
+            } else { // Sucessor era mais abaixo na cadeia esquerda.
+                paiSucessor.setFilhoEsquerda(sucessor.getFilhoDireita()); // Ajusta o ponteiro esquerdo do pai do sucessor.
+            }
+        }
+        // Retorna o valor que foi removido (ou substituído).
+        return removido;
+    }
+
+    // Método auxiliar que ajusta o ponteiro do 'pai' para substituir o filho 'alvo' por 'novoFilho'.
+    private void substituirFilho(No<T> pai, No<T> alvo, No<T> novoFilho) {
+        if (pai == null) {          // Se o pai é nulo, o alvo era a raiz.
+            raiz = novoFilho;       // Atualiza a raiz da árvore.
+        } else if (pai.getFilhoEsquerda() == alvo) { // Se o alvo era o filho esquerdo do pai...
+            pai.setFilhoEsquerda(novoFilho);         // Substitui o filho esquerdo.
+        } else {                     // Caso contrário, era o filho direito.
+            pai.setFilhoDireita(novoFilho);          // Substitui o filho direito.
+        }
     }
 
     @Override
     public int altura() {
-        return calcularAltura(raiz);
+        // Retorna a altura da árvore inteira chamando a versão recursiva na raiz.
+        return altura(raiz);
     }
 
-    private int calcularAltura(No<T> no) {
-        if (no == null) {
-            return 0; // árvore vazia, altura 0
-        }
-        int alturaEsquerda = calcularAltura(no.getFilhoEsquerda());
-        int alturaDireita = calcularAltura(no.getFilhoDireita());
-        return 1 + Math.max(alturaEsquerda, alturaDireita);
-
-        // TODO Esse método ficou elegante mas complexo
-        //  Irá percorrer todas as folhas a partir da raiz recursivamente
-        //  Com acesso a todas as folhas, irá subir camada a camada
-        //  o nó de cima pegará o maior valor entre os filhos e somará 1
-        //  ao final se terá a altura da árvore
+    // Calcula a altura de forma recursiva: nó nulo = -1; nó folha = 0; demais = 1 + max(alturas dos filhos).
+    private int altura(No<T> n) {
+        if (n == null) return -1; // Convenção da especificação: árvore só com raiz tem altura 0, logo null => -1.
+        int he = altura(n.getFilhoEsquerda()); // Altura do filho esquerdo.
+        int hd = altura(n.getFilhoDireita());  // Altura do filho direito.
+        return 1 + Math.max(he, hd);           // Altura do nó atual é 1 + a maior altura entre os filhos.
     }
 
     @Override
     public int quantidadeNos() {
-        return calcularQuantidade(raiz);
+        // Retorna o total de nós na árvore chamando o método recursivo a partir da raiz.
+        return contar(raiz);
     }
 
-    private int calcularQuantidade(No<T> no){
-        if (no == null) {
-            return 0; // Chegou ao fim ou está vazia
-        }
-        int Esquerda = calcularQuantidade(no.getFilhoEsquerda());
-        int Direita = calcularQuantidade(no.getFilhoDireita());
-        return Esquerda + Direita + 1;
-
-        // TODO mesma lógica do código acima
+    // Conta nós recursivamente: nulo conta 0; caso contrário 1 + esquerda + direita.
+    private int contar(No<T> n) {
+        if (n == null) return 0; // Base: subárvore vazia tem zero nós.
+        return 1 + contar(n.getFilhoEsquerda()) + contar(n.getFilhoDireita()); // Soma 1 (nó atual) com as contagens dos filhos.
     }
 
     @Override
     public String caminharEmNivel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Constrói uma string com os valores em ordem de nível, separados por " \n ", iniciando com "[" e terminando com "]".
+        StringBuilder sb = new StringBuilder("["); // Começa com "[" conforme a especificação.
+        if (raiz != null) { // Se a árvore não está vazia, faz uma BFS (percurso em largura).
+            Deque<No<T>> fila = new ArrayDeque<>(); // Fila para visitar nós nível a nível.
+            fila.add(raiz); // Começa pela raiz.
+            boolean first = true; // Controle para não colocar separador antes do primeiro elemento.
+            while (!fila.isEmpty()) { // Enquanto houver nós a visitar...
+                No<T> n = fila.removeFirst(); // Retira o primeiro da fila (o mais antigo enfileirado).
+                if (!first) sb.append(" \n "); // Se não é o primeiro, adiciona o separador exigido.
+                first = false; // Depois do primeiro, todos os próximos colocarão separador.
+                sb.append(String.valueOf(n.getValor())); // Concatena o valor do nó atual usando toString().
+                // Enfileira os filhos para manter a ordem de nível.
+                if (n.getFilhoEsquerda() != null) fila.addLast(n.getFilhoEsquerda());
+                if (n.getFilhoDireita() != null) fila.addLast(n.getFilhoDireita());
+            }
+        }
+        sb.append("]"); // Fecha com "]" conforme a especificação.
+        return sb.toString(); // Retorna a string final do caminhamento em nível.
     }
 
     @Override
     public String caminharEmOrdem() {
-        StringBuilder sb = new StringBuilder();
-        percorrerEmOrdem(raiz, sb);
-        return sb.toString();
+        // Constrói uma string com os valores em ordem (in-order), separados por " \n ", dentro de colchetes.
+        StringBuilder sb = new StringBuilder("["); // Inicia com "[".
+        boolean[] first = { true }; // Usa array de 1 posição para passar "por referência" o estado de primeiro elemento.
+        inOrder(raiz, sb, first);   // Chama o percurso recursivo em-ordem iniciando na raiz.
+        sb.append("]");             // Fecha com "]".
+        return sb.toString();       // Retorna a string completa.
     }
 
-    private void percorrerEmOrdem(No<T> no, StringBuilder string){
-        if (no == null) return;
-
-        percorrerEmOrdem(no.getFilhoEsquerda(), string);
-        string.append(no.getValor()).append(" "); // Adicionando espaço vazio para não terem elementos "grudados"
-        percorrerEmOrdem(no.getFilhoDireita(), string);
-
-        /*
-        TODO
-         Primeiro dar print nos elementos à esquerda do nó,
-         o próprio nó
-         e depois os elementos da direita
-         */
+    // Percurso em ordem (esquerda, nó, direita): imprime ordenado conforme o comparador da árvore.
+    private void inOrder(No<T> n, StringBuilder sb, boolean[] first) {
+        if (n == null) return; // Caso base: subárvore vazia não adiciona nada.
+        inOrder(n.getFilhoEsquerda(), sb, first); // Visita recursivamente a subárvore esquerda.
+        if (!first[0]) sb.append(" \n "); else first[0] = false; // Coloca separador após o primeiro elemento.
+        sb.append(String.valueOf(n.getValor())); // Adiciona o valor do nó atual.
+        inOrder(n.getFilhoDireita(), sb, first); // Visita recursivamente a subárvore direita.
     }
 }
