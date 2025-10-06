@@ -41,8 +41,8 @@
 | `pesquisar(T)`                              | Busca pelo índice                                       |               |               | x                   | 06/10  | -     | Em Revisão |
 | `pesquisar(T, Comparator)`                  | Busca com Comparator alternativo (varredura)            |               |               | x                   | 06/10  | -     | Em Revisão |
 | `remover(T)`                                | Remoção (0/1/2 filhos, sucessor)                        |               |               |                     | 06/10  | -     | Em Revisão |
-| `altura()` / `quantidadeNos()`              | Métricas                                                |               |               |                     |        |       |            |
-| `caminharEmNivel()` / `caminharEmOrdem()`   | Saídas formatadas                                       |               |               | x                   | 06/10  | -     | Em Revisão |
+| `altura()` / `quantidadeNos()`              | Métricas                                                | x             | x             | x                   | 06/10  | -     | Em Revisão |
+| `caminharEmNivel()` / `caminharEmOrdem()`   | Saídas formatadas                                       | x             |               |                     | 06/10  | -     | Em Revisão |
 | App – fluxos principais                     | Add, listar, buscar por matrícula/nome, remover         |               |               |                     |        |       |            |
 | App – testes                                | Dados crescentes/aleatórios                             |               |               |                     |        |       |            |
 | Integração com app do professor             | Ajuste de imports + execução                            |               |               |                     |        |       |            |
