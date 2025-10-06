@@ -6,6 +6,9 @@ package org.lib;
  * and open the template in the editor.
  */
 
+import org.lib.exception.ArvoreVaziaException;
+import org.lib.exception.ValorNaoEncontradoException;
+
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -46,14 +49,14 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                     atual.setFilhoEsquerda(new No<>(novoValor)); // Insere aqui como novo filho esquerdo.
                     return; // Inserção concluída.
                 }
-                // Caso exista, desce para a esquerda e continua procurando.
+                // Caso exista, desce para a esquerda e continua a procura.
                 atual = atual.getFilhoEsquerda();
             } else { // Se cmp >= 0, segue para a direita (duplicatas vão para a direita por convenção aqui).
                 if (atual.getFilhoDireita() == null) { // Se não existe filho direito...
                     atual.setFilhoDireita(new No<>(novoValor)); // Insere aqui como novo filho direito.
                     return; // Inserção concluída.
                 }
-                // Caso exista, desce para a direita e continua procurando.
+                // Caso exista, desce para a direita e continua a procura.
                 atual = atual.getFilhoDireita();
             }
         }
@@ -61,28 +64,95 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public T pesquisar(T valor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Objects.requireNonNull(valor, "Valor a pesquisar não pode ser nulo.");
+        if (raiz == null) throw new ArvoreVaziaException("A árvore está vazia, não é possível pesquisar valores");
+
+        No<T> atual = raiz;
+
+        while (atual != null){
+            int cmp = comparador.compare(valor, atual.getValor());
+
+            // Se = 0 Então encontrou
+            if (cmp == 0) {
+                return atual.getValor();
+            }
+            // Se < 0 então vai para esquerda
+            else if (cmp < 0) {
+                atual = atual.getFilhoEsquerda();
+            }
+            // Se > 0 então vai para direita
+            else {
+                atual = atual.getFilhoDireita();
+            }
+        }
+
+        // Utilizei uma exception, mas, pode mudar futuramente
+        throw new ValorNaoEncontradoException("Valor não encontrado");
     }
 
     @Override
     public T pesquisar(T valor, Comparator comparador) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Objects.requireNonNull(valor, "Valor a pesquisar não pode ser nulo.");
+        if (raiz == null) throw new ArvoreVaziaException("A árvore está vazia, não é possível pesquisar valores");
+
+        No<T> atual = raiz;
+
+        while (atual != null){
+            int cmp = comparador.compare(valor, atual.getValor());
+            // Se = 0 Então encontrou
+            if (cmp == 0) return atual.getValor();
+                // Se < 0 então vai para esquerda
+            else if (cmp < 0) atual = atual.getFilhoEsquerda();
+                // Se > 0 então vai para direita
+            else atual = atual.getFilhoDireita();
+        }
+
+        // Utilizei uma exception, mas, pode mudar futuramente
+        throw new ValorNaoEncontradoException("Valor não encontrado");
     }
 
     @Override
     public T remover(T valor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        // TODO Esse método é muito mais complexo do que parece.
+        //  vou precisar de ajuda para este
+        return valor;
     }
 
     @Override
     public int altura() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return calcularAltura(raiz);
     }
 
+    private int calcularAltura(No<T> no) {
+        if (no == null) {
+            return 0; // árvore vazia, altura 0
+        }
+        int alturaEsquerda = calcularAltura(no.getFilhoEsquerda());
+        int alturaDireita = calcularAltura(no.getFilhoDireita());
+        return 1 + Math.max(alturaEsquerda, alturaDireita);
+
+        // TODO Esse método ficou elegante mas complexo
+        //  Irá percorrer todas as folhas a partir da raiz recursivamente
+        //  Com acesso a todas as folhas, irá subir camada a camada
+        //  o nó de cima pegará o maior valor entre os filhos e somará 1
+        //  ao final se terá a altura da árvore
+    }
 
     @Override
     public int quantidadeNos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return calcularQuantidade(raiz);
+    }
+
+    private int calcularQuantidade(No<T> no){
+        if (no == null) {
+            return 0; // Chegou ao fim ou está vazia
+        }
+        int Esquerda = calcularQuantidade(no.getFilhoEsquerda());
+        int Direita = calcularQuantidade(no.getFilhoDireita());
+        return Esquerda + Direita + 1;
+
+        // TODO mesma lógica do código acima
     }
 
     @Override
@@ -92,7 +162,23 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public String caminharEmOrdem() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StringBuilder sb = new StringBuilder();
+        percorrerEmOrdem(raiz, sb);
+        return sb.toString();
     }
 
+    private void percorrerEmOrdem(No<T> no, StringBuilder string){
+        if (no == null) return;
+
+        percorrerEmOrdem(no.getFilhoEsquerda(), string);
+        string.append(no.getValor()).append(" "); // Adicionando espaço vazio para não terem elementos "grudados"
+        percorrerEmOrdem(no.getFilhoDireita(), string);
+
+        /*
+        TODO
+         Primeiro dar print nos elementos à esquerda do nó,
+         o próprio nó
+         e depois os elementos da direita
+         */
+    }
 }

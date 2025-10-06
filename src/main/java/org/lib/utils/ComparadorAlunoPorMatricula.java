@@ -1,4 +1,4 @@
-package org.lib;
+package org.lib.utils;
 
 
 import org.tpa.model.Aluno;

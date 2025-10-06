@@ -6,6 +6,8 @@
 package org.tpa;
 
 import org.lib.*;
+import org.lib.utils.ComparadorAlunoPorMatricula;
+import org.lib.utils.ComparadorAlunoPorNome;
 import org.tpa.model.Aluno;
 
 /**
