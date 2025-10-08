@@ -37,7 +37,8 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
                 }
                 // Caso exista, desce para a esquerda e continua a procurar.
                 atual = atual.getFilhoEsquerda();
-            } else { // Se cmp >= 0, segue para a direita (duplicatas vão para a direita por convenção aqui).
+            }
+            else { // Se cmp >= 0, segue para a direita (duplicatas vão para a direita por convenção aqui).
                 if (atual.getFilhoDireita() == null) { // Se não existe filho direito...
                     atual.setFilhoDireita(new No<>(novoValor)); // Insere aqui como novo filho direito.
                     return; // Inserção concluída.
