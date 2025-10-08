@@ -66,30 +66,63 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         return null;
     }
 
-    @Override
-    @SuppressWarnings({"rawtypes","unchecked"}) // Suprime avisos por usar Comparator "raw" recebido externamente.
-    public T pesquisar(T valor, Comparator outroComparador) {
-        // Valida que o comparator alternativo foi fornecido.
-        Objects.requireNonNull(outroComparador, "Comparator da busca não pode ser nulo.");
-        // Valida que o valor de busca não é nulo.
-        Objects.requireNonNull(valor, "Valor de busca não pode ser nulo.");
-        // Se a árvore está vazia, não há o que procurar.
-        if (raiz == null) return null;
 
-        // Faremos uma varredura completa (BFS) porque a árvore foi indexada por OUTRO comparador.
-        Deque<No<T>> fila = new ArrayDeque<>(); // Fila para percorrer em nível (largura).
-        fila.add(raiz); // Começa pela raiz.
-        while (!fila.isEmpty()) { // Enquanto houver nós a visitar...
-            No<T> n = fila.removeFirst(); // Retira o primeiro da fila (próximo nível da árvore).
-            // Compara usando o comparador ALTERNATIVO fornecido apenas para esta busca.
-            if (outroComparador.compare(valor, n.getValor()) == 0) {
-                return n.getValor(); // Achou um elemento que "equivale" segundo o comparador alternativo.
-            }
-            // Enfileira filhos (se existirem) para continuar o percurso em nível.
-            if (n.getFilhoEsquerda() != null) fila.addLast(n.getFilhoEsquerda());
-            if (n.getFilhoDireita() != null) fila.addLast(n.getFilhoDireita());
+    public T pesquisar(T valor, Comparator outroComparador){
+        return pesquisar(this.raiz, valor, outroComparador);
+    }
+
+//    @Override
+//    public T pesquisar(T valor, Comparator outroComparador) {
+//        // Valida que o comparator alternativo foi fornecido.
+//        Objects.requireNonNull(outroComparador, "Comparator da busca não pode ser nulo.");
+//        // Valida que o valor de busca não é nulo.
+//        Objects.requireNonNull(valor, "Valor de busca não pode ser nulo.");
+//        // Se a árvore está vazia, não há o que procurar.
+//        if (raiz == null) return null;
+//
+//        // Faremos uma varredura completa (BFS) porque a árvore foi indexada por OUTRO comparador.
+//        Deque<No<T>> fila = new ArrayDeque<>(); // Fila para percorrer em nível (largura).
+//        fila.add(raiz); // Começa pela raiz.
+//        while (!fila.isEmpty()) { // Enquanto houver nós a visitar...
+//            No<T> n = fila.removeFirst(); // Retira o primeiro da fila (próximo nível da árvore).
+//            // Compara usando o comparador ALTERNATIVO fornecido apenas para esta busca.
+//            if (outroComparador.compare(valor, n.getValor()) == 0) {
+//                return n.getValor(); // Achou um elemento que "equivale" segundo o comparador alternativo.
+//            }
+//            // Enfileira filhos (se existirem) para continuar o percurso em nível.
+//            if (n.getFilhoEsquerda() != null) fila.addLast(n.getFilhoEsquerda());
+//            if (n.getFilhoDireita() != null) fila.addLast(n.getFilhoDireita());
+//        }
+//        // Se terminou a BFS e nada bateu, retorna null (não encontrado).
+//        return null;
+//    }
+
+
+    private T pesquisar(No<T> raiz, T valor, Comparator outroComparador) {
+
+        No<T> resErq, resDir;
+
+
+        // Se a árvore está vazia, não há o que procurar.
+        if (raiz == null){
+            return null;
         }
-        // Se terminou a BFS e nada bateu, retorna null (não encontrado).
+        else if( outroComparador.compare(valor, raiz.getValor()) == 0){
+            return  raiz.getValor();
+        }
+        else{
+
+            resErq = (No<T>) pesquisar(raiz.getFilhoEsquerda(), valor, outroComparador);
+            if(resErq != null){
+                return resErq.getValor();
+            }
+            resDir = (No<T>) pesquisar(raiz.getFilhoDireita(), valor, outroComparador);
+           if(resDir != null){
+               return resDir.getValor();
+           }
+
+        }
+
         return null;
     }
 
