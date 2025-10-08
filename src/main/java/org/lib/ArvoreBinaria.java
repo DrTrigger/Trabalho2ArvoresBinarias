@@ -48,23 +48,52 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         }
     }
 
-    @Override
-    public T pesquisar(T valor) {
-        // Valida que o valor de busca não é nulo.
-        Objects.requireNonNull(valor, "Valor de busca não pode ser nulo.");
-        // Começa a busca a partir da raiz.
-        No<T> atual = raiz;
-        // Enquanto não chegar ao fim (null), tenta encontrar o valor.
-        while (atual != null) {
-            // Compara a chave buscada com o valor do nó atual usando o comparador da ÁRVORE (o índice).
-            int cmp = comparador.compare(valor, atual.getValor());
-            if (cmp == 0) return atual.getValor(); // Achou o elemento; retorna o valor armazenado.
-            // Se chave < atual, vai para a esquerda; senão, vai para a direita (regra da BST).
-            atual = (cmp < 0) ? atual.getFilhoEsquerda() : atual.getFilhoDireita();
-        }
-        // Se saiu do loop, não encontrou o valor; retorna null.
-        return null;
+
+    public T pesquisar(T valor){
+        return pesquisar(valor, this.raiz);
     }
+
+
+    private T pesquisar(T valor, No<T> raiz) {
+        //early stop
+        if(raiz == null){
+            return null;
+        }
+        int cmp = comparador.compare(valor, raiz.getValor());
+
+        if(cmp == 0){
+            return raiz.getValor();
+        }
+        else if (cmp < 0) {
+            return  pesquisar(valor, raiz.getFilhoEsquerda());
+        }
+        else{
+            return pesquisar(valor, raiz.getFilhoDireita());
+        }
+
+    }
+
+
+
+//    @Override
+//    public T pesquisar(T valor) {
+//        // Valida que o valor de busca não é nulo.
+//        Objects.requireNonNull(valor, "Valor de busca não pode ser nulo.");
+//        // Começa a busca a partir da raiz.
+//        No<T> atual = raiz;
+//        // Enquanto não chegar ao fim (null), tenta encontrar o valor.
+//        while (atual != null) {
+//            // Compara a chave buscada com o valor do nó atual usando o comparador da ÁRVORE (o índice).
+//            int cmp = comparador.compare(valor, atual.getValor());
+//            if (cmp == 0) return atual.getValor(); // Achou o elemento; retorna o valor armazenado.
+//            // Se chave < atual, vai para a esquerda; senão, vai para a direita (regra da BST).
+//            atual = (cmp < 0) ? atual.getFilhoEsquerda() : atual.getFilhoDireita();
+//        }
+//        // Se saiu do loop, não encontrou o valor; retorna null.
+//        return null;
+//    }
+
+
 
 
     public T pesquisar(T valor, Comparator outroComparador){
@@ -102,7 +131,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
         No<T> resErq, resDir;
 
-
         // Se a árvore está vazia, não há o que procurar.
         if (raiz == null){
             return null;
@@ -111,7 +139,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             return  raiz.getValor();
         }
         else{
-
             resErq = (No<T>) pesquisar(raiz.getFilhoEsquerda(), valor, outroComparador);
             if(resErq != null){
                 return resErq.getValor();
@@ -122,7 +149,6 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
            }
 
         }
-
         return null;
     }
 
