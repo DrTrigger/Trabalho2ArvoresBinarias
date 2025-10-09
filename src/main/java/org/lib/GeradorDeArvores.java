@@ -17,7 +17,7 @@ import java.util.Random;
  *
  * Esta classe é utilizada nos programas de teste para gerar árvores balanceadas ou degeneradas
  */
-public class PopuladorDeArvores {
+public class GeradorDeArvores {
 
     final char vogais[] = {'a', 'e', 'i', 'o','u','A','E','I','O','U'};
     final Random rand = new Random();

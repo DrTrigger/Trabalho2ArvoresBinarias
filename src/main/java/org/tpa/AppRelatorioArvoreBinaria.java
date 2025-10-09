@@ -20,7 +20,7 @@ import org.tpa.model.Aluno;
 public class AppRelatorioArvoreBinaria {
     public static void main(String[] args) {
         //Instancio o meu gerador de árvores (que também foi fornecido)
-        PopuladorDeArvores gerador = new PopuladorDeArvores();
+        GeradorDeArvores gerador = new GeradorDeArvores();
         //Instancio um comparador de alunos por matricula (também fornecido)
         ComparadorAlunoPorMatricula compPorMatricula = new ComparadorAlunoPorMatricula();
         ComparadorAlunoPorNome compPorNome = new ComparadorAlunoPorNome();
