@@ -154,10 +154,61 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
         return null;
     }
 
+
     @Override
     public T remover(T valor) {
-        return null;
+        Objects.requireNonNull(valor, "Valor a remover não pode ser nulo.");
+        Object[] resultado = remover(raiz, valor);
+        raiz = (No<T>) resultado[0];      // nova raiz da árvore
+        return (T) resultado[1];          // valor removido
     }
+
+    @SuppressWarnings("unchecked")
+    private Object[] remover(No<T> raiz, T valor) {
+        if (raiz == null) return new Object[]{ null, null };
+
+        int cmp = comparador.compare(valor, raiz.getValor());
+        if (cmp < 0) {
+            Object[] res = remover(raiz.getFilhoEsquerda(), valor);
+            raiz.setFilhoEsquerda((No<T>) res[0]);
+            res[0] = raiz;
+            return res;
+        } else if (cmp > 0) {
+            Object[] res = remover(raiz.getFilhoDireita(), valor);
+            raiz.setFilhoDireita((No<T>) res[0]);
+            res[0] = raiz;
+            return res;
+        } else {
+            T valorRemovido = raiz.getValor();
+            // Caso 1: nenhum filho
+            if (raiz.getFilhoEsquerda() == null && raiz.getFilhoDireita() == null)
+                return new Object[]{ null, valorRemovido };
+
+            // Caso 2: apenas um filho
+            if (raiz.getFilhoEsquerda() == null)
+                return new Object[]{ raiz.getFilhoDireita(), valorRemovido };
+            if (raiz.getFilhoDireita() == null)
+                return new Object[]{ raiz.getFilhoEsquerda(), valorRemovido };
+
+            // Caso 3: dois filhos
+            No<T> sucessor = encontrarMinimo(raiz.getFilhoDireita());
+            raiz.setValor(sucessor.getValor());
+            Object[] res = remover(raiz.getFilhoDireita(), sucessor.getValor());
+            raiz.setFilhoDireita((No<T>) res[0]);
+            return new Object[]{ raiz, valorRemovido };
+        }
+    }
+    /**
+     * Retorna o nó com o menor valor da subárvore a partir de 'raiz'.
+     */
+    private No<T> encontrarMinimo(No<T> raiz) {
+        while (raiz.getFilhoEsquerda() != null) {
+            raiz = raiz.getFilhoEsquerda();
+        }
+        return raiz;
+    }
+
+
 
 
     @Override
