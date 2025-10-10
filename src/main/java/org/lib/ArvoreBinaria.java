@@ -181,8 +181,26 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     @Override
     public String caminharEmNivel() {
-        return "";
+        // Constrói uma string com os valores em ordem de nível, separados por " \n ", iniciando com "[" e terminando com "]".
+        StringBuilder sb = new StringBuilder("["); // Começa com "[" conforme a especificação.
+        if (raiz != null) { // Se a árvore não está vazia, faz uma BFS (percurso em largura).
+            Deque<No<T>> fila = new ArrayDeque<>(); // Fila para visitar nós nível a nível.
+            fila.add(raiz); // Começa pela raiz.
+            boolean first = true; // Controle para não colocar separador antes do primeiro elemento.
+            while (!fila.isEmpty()) { // Enquanto houver nós a visitar...
+                No<T> n = fila.removeFirst(); // Retira o primeiro da fila (o mais antigo enfileirado).
+                if (!first) sb.append(" \n "); // Se não é o primeiro, adiciona o separador exigido.
+                first = false; // Depois do primeiro, todos os próximos colocarão separador.
+                sb.append(String.valueOf(n.getValor())); // Concatena o valor do nó atual usando toString().
+                // Enfileira os filhos para manter a ordem de nível.
+                if (n.getFilhoEsquerda() != null) fila.addLast(n.getFilhoEsquerda());
+                if (n.getFilhoDireita() != null) fila.addLast(n.getFilhoDireita());
+            }
+        }
+        sb.append("]"); // Fecha com "]" conforme a especificação.
+        return sb.toString(); // Retorna a string final do caminhamento em nível.
     }
+
 
     // Conta nós recursivamente: nulo conta 0; caso contrário 1 + esquerda + direita.
     private int contar(No<T> n) {

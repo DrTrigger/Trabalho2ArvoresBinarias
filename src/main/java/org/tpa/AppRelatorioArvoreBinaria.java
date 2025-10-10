@@ -35,10 +35,15 @@ public class AppRelatorioArvoreBinaria {
         System.out.println("Árvore Degenerada Criada");
         //Imprimo a quantidade de nós e a altura da árvore resultante
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+        //System.out.println(arv.caminharEmNivel().toString());
         arv = new ArvoreBinaria<>(compPorMatricula);
+
+
+
         gerador.geraArvoreDegenerada(200, arv);
         System.out.println("Árvore Degenerada Criada");
         System.out.println("Quantidade de Nós: " + arv.quantidadeNos()+ " Altura: " + arv.altura());
+
         arv = new ArvoreBinaria<>(compPorMatricula);
         gerador.geraArvoreDegenerada(1000, arv);
         System.out.println("Árvore Degenerada Criada");
