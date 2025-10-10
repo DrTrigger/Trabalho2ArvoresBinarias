@@ -98,6 +98,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
 
     public T pesquisar(T valor, Comparator outroComparador){
+        Objects.requireNonNull(valor);
         return pesquisar(this.raiz, valor, outroComparador);
     }
 
@@ -130,7 +131,7 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
 
     private T pesquisar(No<T> raiz, T valor, Comparator outroComparador) {
 
-        No<T> resErq, resDir;
+        T resErq, resDir;
 
         // Se a árvore está vazia, não há o que procurar.
         if (raiz == null){
@@ -140,13 +141,13 @@ public class ArvoreBinaria<T> implements IArvoreBinaria<T> {
             return  raiz.getValor();
         }
         else{
-            resErq = (No<T>) pesquisar(raiz.getFilhoEsquerda(), valor, outroComparador);
+            resErq = pesquisar(raiz.getFilhoEsquerda(), valor, outroComparador);
             if(resErq != null){
-                return resErq.getValor();
+                return resErq;
             }
-            resDir = (No<T>) pesquisar(raiz.getFilhoDireita(), valor, outroComparador);
+            resDir = pesquisar(raiz.getFilhoDireita(), valor, outroComparador);
            if(resDir != null){
-               return resDir.getValor();
+               return resDir;
            }
 
         }
