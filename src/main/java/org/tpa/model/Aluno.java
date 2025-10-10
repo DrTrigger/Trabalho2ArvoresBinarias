@@ -28,4 +28,9 @@ public class Aluno {
     public void setNome(String nome) {
         this.nome = Objects.requireNonNull(nome);;
     }
+
+    @Override
+    public String toString() {
+        return "Aluno{nome='" + nome + "', matricula=" + matricula + "}";
+    }
 }
