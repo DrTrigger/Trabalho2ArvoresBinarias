@@ -23,7 +23,7 @@ public class AppCRUDArvore {
         ComparadorAlunoPorMatricula compMat = new ComparadorAlunoPorMatricula();
         ComparadorAlunoPorNome compNome = new ComparadorAlunoPorNome();
 
-        IArvoreBinaria<Aluno> arv = new ArvoreBinaria<>(compMat);
+        IArvoreBinaria<Aluno> arv = new ArvoreBinaria<Aluno>(compMat);
         GeradorDeArvores gerador = new GeradorDeArvores();
 
         System.out.println("==== Árvore Binária de Alunos (CRUD) ====");
