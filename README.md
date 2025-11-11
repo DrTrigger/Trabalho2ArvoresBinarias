@@ -43,14 +43,14 @@
 | `remover(T)`                                | Remoção (0/1/2 filhos, sucessor)                        |               |               |                     | 06/10  | -     | Em Revisão |
 | `altura()` / `quantidadeNos()`              | Métricas                                                | x             | x             | x                   | 06/10  | -     | Em Revisão |
 | `caminharEmNivel()` / `caminharEmOrdem()`   | Saídas formatadas                                       | x             |               |                     | 06/10  | -     | Em Revisão |
-| App – fluxos principais                     | Add, listar, buscar por matrícula/nome, remover         |               |               |                     |        |       |            |
+| App – fluxos principais                     | Add, listar, buscar por matrícula/nome, remover         | x             | x             |                     |        |       |            |
 | App – testes                                | Dados crescentes/aleatórios                             |               |               |                     |        |       |            |
-| Integração com app do professor             | Ajuste de imports + execução                            |               |               |                     |        |       |            |
-| Relatório – Q1–Q3                           | Degenerada: topologia, pior caso, O-()                  |               |               |                     |        |       |            |
-| Relatório – Q4–Q6                           | Balanceada: topologia, pior caso, O-()                  |               |               |                     |        |       |            |
-| Relatório – Q7–Q9                           | Busca com Comparator alternativo + desempenho           |               |               |                     |        |       |            |
-| Relatório – Q10–Q12                         | App: requisitos, arquitetura, planilha de atuação       |               |               |                     |        |       |            |
-| Revisão final + PDF                         | Revisão, nomes do grupo, link do repositório            |               |               |                     |        |       |            |
+| Integração com app do professor             | Ajuste de imports + execução                            | x             |               |                     |        |       |            |
+| Relatório – Q1–Q3                           | Degenerada: topologia, pior caso, O-()                  | x             |               |                     |        |       |            |
+| Relatório – Q4–Q6                           | Balanceada: topologia, pior caso, O-()                  |               |               | x                   |        |       |            |
+| Relatório – Q7–Q9                           | Busca com Comparator alternativo + desempenho           |               | x             |                     |        |       |            |
+| Relatório – Q10–Q12                         | App: requisitos, arquitetura, planilha de atuação       | x             |               |                     |        |       |            |
+| Revisão final + PDF                         | Revisão, nomes do grupo, link do repositório            | x             | x             |                     |        |       |            |
 
 
 
@@ -218,6 +218,7 @@ public class DemoTreeMap {
         System.out.println("Por nome 'Camila' via índice secundário: " + porNome.get("Camila"));
     }
 }
+
 
 
 
